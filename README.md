@@ -3,7 +3,7 @@ CLI interactive terminal implementation of minesweeper
 
 **TO RUN**:
 
-In Docker: `docker build -t "haskell-minesweeper"` `docker run haskell-minesweeper`
+In Docker: `docker build -t "haskell-minesweeper" .` `docker run -it haskell-minesweeper`
 
 In ghci: `runhaskell minesweeper.hs`
 
