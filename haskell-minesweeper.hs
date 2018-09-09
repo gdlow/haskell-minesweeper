@@ -69,13 +69,14 @@ failedState board bombState (boolIndex:boolArrayRange) =
 propagate :: [[Char]] -> [Bool] -> Int -> Int -> [[Char]]
 propagate board bombState i j =
     -- update first, then propagate. 
-    if ((not $ inBounds rows cols i j) || numInVicinity board bombState i j > 0 ) then board
+    if ((not $ inBounds rows cols i j) || failedBoard !! i !! j /= '*' ) then board
     -- if ((not $ inBounds rows cols i j) || board !! i !! j /= '*' ) then board
         else
             boardNorth
             where
                 rows = length board
                 cols = length $ board !! 0
+                failedBoard = failedState board bombState [0..(length bombState - 1)]
                 board' = updateBoardWithNum board bombState i j
                 boardEast = propagate board' bombState (i+1) j
                 boardWest = propagate boardEast bombState (i-1) j
@@ -135,8 +136,7 @@ updateGameState board bombState = do
     j <- getInt
     when (bombState !! (cols * i + j)) $ printBoard $ failedState board bombState [0..(length bombState - 1)]
     when (bombState !! (cols * i + j)) $ you_die
-    let board' = updateBoardWithNum board bombState i j
-    let newBoard = propagate board' bombState i j
+    let newBoard = propagate board bombState i j
     printBoard newBoard
     updateGameState newBoard bombState
     return ()
